@@ -6,7 +6,7 @@
 /*   By: fgonzale <fgonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 21:08:17 by fgonzale          #+#    #+#             */
-/*   Updated: 2023/04/26 17:04:28 by fgonzale         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:22:46 by fgonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,15 @@ int	handle_keyPress(int keysym, t_data *data)
 		destroy_all_xpm_images(data);
 		data->mlx_window = NULL; // Pour que la fonction render stop.
 	}
-	printf("Key Pressed : %d", keysym);
+	else if (keysym == XK_w || keysym == XK_W)  // Touche W;
+		move_player(0, -1, data);
+	else if (keysym == XK_a || keysym == XK_A)
+		move_player(-1, 0, data);
+	else if (keysym == XK_s || keysym == XK_S)
+		move_player(0, 1, data);
+	else if (keysym == XK_d || keysym == XK_D)
+		move_player(1, 0, data);
+	//printf("Key Pressed : %d", keysym);
 	return (0);
 }
 

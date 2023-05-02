@@ -6,7 +6,7 @@
 /*   By: fgonzale <fgonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 22:35:27 by fgonzale          #+#    #+#             */
-/*   Updated: 2023/04/25 14:34:41 by fgonzale         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:43:38 by fgonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,10 @@ static void	check_map_char(t_data *data)
 {
 	int	i;
 	int	j;
-	int	collectibles;
 	int	exit;
 	int	player;
 
-	collectibles = 0;
+	data->textures.collectibles_nb = 0;
 	exit = 0;
 	player = 0;
 	i = 0;
@@ -30,7 +29,7 @@ static void	check_map_char(t_data *data)
 		while (data->map[i][j])
 		{
 			if (data->map[i][j] == 'C')
-				collectibles++;
+				data->textures.collectibles_nb++;
 			else if (data->map[i][j] == 'E')
 				exit++;
 			else if (data->map[i][j] == 'P')
@@ -41,7 +40,7 @@ static void	check_map_char(t_data *data)
 		}
 		i++;
 	}
-	if (collectibles == 0 || exit != 1 || player != 1)
+	if (data->textures.collectibles_nb == 0 || exit != 1 || player != 1)
 		exit_error(msg("Wrong number values", 1), data);
 }
 

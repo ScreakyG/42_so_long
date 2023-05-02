@@ -6,7 +6,7 @@
 /*   By: fgonzale <fgonzale@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:53:49 by fgonzale          #+#    #+#             */
-/*   Updated: 2023/04/26 16:23:21 by fgonzale         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:45:15 by fgonzale         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,19 @@
 
 # include "../minilibx-linux/mlx.h"
 # include "../libft/libft.h"
-# include "fcntl.h"
+# include <fcntl.h>
 # include <string.h>
 # include <errno.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <X11/keysym.h>
 # include <X11/X.h>
+
+typedef struct s_pos
+{
+	int		x;
+	int		y;
+}	t_pos;
 
 typedef struct s_text
 {
@@ -33,16 +39,8 @@ typedef struct s_text
 	void	*player;
 	void	*collectibles;
 	void	*exit;
+	int		collectibles_nb;
 }	t_textures;
-
-typedef struct s_img
-{
-	void	*mlx_img;
-	char	*addr;
-	int		bpp; /* bits per pixel */
-	int		line_len;
-	int		endian;
-}	t_img;
 
 typedef struct s_struct
 {
@@ -64,6 +62,10 @@ void	check_map_is_valid(t_data *data, char *map_arg);
 void	create_map(t_data *data);
 void	load_xpm_files(t_data *data);
 
+/* Player Movement */
+
+void	move_player(int x, int y, t_data *data);
+
 /* Error */
 
 int		msg(char *str1, int exit_code);
@@ -72,8 +74,8 @@ void	free_strs(t_data *data);
 void	destroy_all_xpm_images(t_data *data);
 
 //int	render_rectangle(t_img *img, t_rect rect);
-int	render_background(t_img *img, int color);
-void	img_pix_put(t_img *img, int x, int y, int color);
+//int	render_background(t_img *img, int color);
+//void	img_pix_put(t_img *img, int x, int y, int color);
 
 /* Input Handling */
 
