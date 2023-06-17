@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   player_movement.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgonzale <fgonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: parallels <parallels@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 15:23:22 by fgonzale          #+#    #+#             */
-/*   Updated: 2023/05/02 16:45:58 by fgonzale         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:16:04 by parallels        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
 
-static t_pos	get_player_pos(t_data *data)
+t_pos	get_player_pos(t_data *data)
 {
 	t_pos	player_pos;
 
@@ -63,5 +63,6 @@ void	move_player(int x, int y, t_data *data)
 			else
 				return ;
 		}
+		printf("Player movements count = %d\n", ++data->move_count);
 	}
 }

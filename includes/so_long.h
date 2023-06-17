@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgonzale <fgonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: parallels <parallels@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/18 18:53:49 by fgonzale          #+#    #+#             */
-/*   Updated: 2023/05/02 16:45:15 by fgonzale         ###   ########.fr       */
+/*   Updated: 2023/06/13 19:32:23 by parallels        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_struct
 	int			map_height;
 	void		*mlx_ptr;
 	void		*mlx_window;
+	int			move_count;
 	t_textures textures;
 }	t_data;
 
@@ -64,6 +65,7 @@ void	load_xpm_files(t_data *data);
 
 /* Player Movement */
 
+t_pos	get_player_pos(t_data *data);
 void	move_player(int x, int y, t_data *data);
 
 /* Error */
@@ -72,6 +74,10 @@ int		msg(char *str1, int exit_code);
 void	exit_error(int exit_code, t_data *data);
 void	free_strs(t_data *data);
 void	destroy_all_xpm_images(t_data *data);
+
+/* UTILS */
+
+char **strs_strdup(char **strs, t_data *data);
 
 //int	render_rectangle(t_img *img, t_rect rect);
 //int	render_background(t_img *img, int color);

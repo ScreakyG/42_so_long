@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgonzale <fgonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: parallels <parallels@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 21:08:17 by fgonzale          #+#    #+#             */
-/*   Updated: 2023/05/02 16:22:46 by fgonzale         ###   ########.fr       */
+/*   Updated: 2023/06/12 22:48:37 by parallels        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	render(t_data *data)
 
 int	handle_keyPress(int keysym, t_data *data)
 {
-	if (keysym == XK_Escape)
+	if (keysym == XK_Escape || keysym == DestroyNotify)
 	{
 		mlx_destroy_window(data->mlx_ptr, data->mlx_window);
 		destroy_all_xpm_images(data);
@@ -50,6 +50,19 @@ static void	init_data(t_data *data)
 	data->textures.floor = NULL;
 	data->textures.player = NULL;
 	data->textures.wall = NULL;
+	data->move_count = 0;
+}
+
+static int	cross_close(t_data *data)
+{
+	mlx_destroy_window(data->mlx_ptr, data->mlx_window);
+	destroy_all_xpm_images(data);
+	data->mlx_window = NULL;
+	mlx_loop_end(data->mlx_ptr);
+	mlx_destroy_display(data->mlx_ptr);
+	free(data->mlx_ptr);
+	free_strs(data);
+	exit(0);
 }
 
 int	main(int argc, char **argv)
@@ -57,7 +70,7 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if (argc != 2)
-		return (printf("Only need .ber map as arg\n"), 1);
+		return (printf("Only need .ber map as arg\n"), 1); // CHANGER PAR MON PRINTF
 	init_data(&data); // PERMET DE PAS AVOIR DE LEAK UNCONDITIONAL JUMP
 	check_map_format(argv, &data);
 	check_map_is_valid(&data, argv[1]);
@@ -73,6 +86,7 @@ int	main(int argc, char **argv)
 
 	mlx_loop_hook(data.mlx_ptr, &render, &data);
 	mlx_hook(data.mlx_window, KeyPress, KeyPressMask, &handle_keyPress, &data);
+	mlx_hook(data.mlx_window, DestroyNotify, ButtonPressMask, &cross_close, &data); // POUR FERMER AVEC LA CROIX
 	mlx_loop(data.mlx_ptr);
 
 	mlx_destroy_display(data.mlx_ptr);

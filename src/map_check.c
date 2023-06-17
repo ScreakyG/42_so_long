@@ -3,14 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   map_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgonzale <fgonzale@student.42.fr>          +#+  +:+       +#+        */
+/*   By: parallels <parallels@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 22:35:27 by fgonzale          #+#    #+#             */
-/*   Updated: 2023/05/02 16:43:38 by fgonzale         ###   ########.fr       */
+/*   Updated: 2023/06/14 10:34:04 by parallels        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/so_long.h"
+
+static void	check_map_paths(t_data *data)
+{
+	int	collectibles;
+	int	exit;
+	char **map_copy;
+
+	collectibles = data->textures.collectibles_nb;
+	exit = 1;
+	map_copy = strs_strdup(data->map, data);
+	if (!map_copy)
+		printf("Map copy error"); // CHANGER
+	// PARCOURIR LA MAP
+		// DES QUE ON TOMBE SUR C OU E , envoyer la position de C/E et faire une fonction récursive pour comparer la position de C par 
+		//rapport à la player_pos
+	while (*map_copy)
+	{
+		printf("%s\n", *map_copy);
+		map_copy++;
+	}
+	if (collectibles != 0 || exit != 0)
+		exit_error(msg("Collectible or exit might not be accessible", 1), data);
+}
+
+char **strs_strdup(char **strs, t_data *data)
+{
+	char **copy;
+	int	i;
+
+	i = 0;
+	copy = malloc((data->map_height + 1) * sizeof(char *));
+	if (!copy)
+		return (NULL);
+	while (i < data->map_height)
+	{
+		copy[i] = ft_strdup2(strs[i]);
+		i++;
+	}
+	copy[i] = NULL;
+	return (copy);
+}
 
 static void	check_map_char(t_data *data)
 {
@@ -41,7 +82,7 @@ static void	check_map_char(t_data *data)
 		i++;
 	}
 	if (data->textures.collectibles_nb == 0 || exit != 1 || player != 1)
-		exit_error(msg("Wrong number values", 1), data);
+		exit_error(msg("Error with map items", 1), data);
 }
 
 static void	check_map(t_data *data, unsigned int height)
@@ -58,7 +99,7 @@ static void	check_map(t_data *data, unsigned int height)
 	while (data->map[i])
 	{
 		if (ft_strlen(data->map[i]) != width)
-			exit_error(msg("Map not rectangle\n", 1), data);
+			exit_error(msg("Map not rectangle", 1), data);
 		j = 0;
 		while (data->map[i][j])
 		{
@@ -128,6 +169,7 @@ void	check_map_is_valid(t_data *data, char *map_arg)
 	data->map_height = i;
 	close(fd_map);
 	check_map(data, data->map_height);
+	check_map_paths(data);
 }
 
 void	check_map_format(char **argv, t_data *data)
@@ -143,5 +185,5 @@ void	check_map_format(char **argv, t_data *data)
 	if (!ft_strncmp(".ber", &argv[1][i], 4))
 		return ;
 	else
-		exit_error(msg("Map format is not correct", 1), data);
+		exit_error(msg("Map format must be .ber", 1), data);
 }
